@@ -15,9 +15,9 @@ with open('./input.txt', mode='rt', encoding='utf-8') as inputFile:
             isCorrect = True
 
             for index in range(len(numbers)):
-                currNum = numbers[index].split('\\')[0]
+                currNum = numbers[index]
                 for jndex in range(index, len(numbers)):
-                    nextNum = numbers[jndex].split('\\')[0]
+                    nextNum = numbers[jndex]
                     if nextNum in rules.keys():
                         rulesForNum = rules[numbers[jndex]]
                         if currNum in rulesForNum:
@@ -30,9 +30,9 @@ with open('./input.txt', mode='rt', encoding='utf-8') as inputFile:
                 while not isCorrect:
                     isCorrect = True
                     for index in range(len(numbers)):
-                        currNum = numbers[index].split('\\')[0]
+                        currNum = numbers[index]
                         for jndex in range(index, len(numbers)):
-                            nextNum = numbers[jndex].split('\\')[0]
+                            nextNum = numbers[jndex]
                             if nextNum in rules.keys():
                                 rulesForNum = rules[numbers[jndex]]
                                 if currNum in rulesForNum:
