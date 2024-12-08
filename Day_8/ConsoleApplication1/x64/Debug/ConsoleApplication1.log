@@ -1,2 +1,6 @@
 ﻿  ConsoleApplication1.cpp
+C:\Users\TheSimilier\Code\advent-of-code-2024-solutions\Day_8\ConsoleApplication1\ConsoleApplication1.cpp(103,17): warning C4477: 'printf' : format string '%i' requires an argument of type 'int', but variadic argument 1 has type 'unsigned __int64'
+      C:\Users\TheSimilier\Code\advent-of-code-2024-solutions\Day_8\ConsoleApplication1\ConsoleApplication1.cpp(103,17):
+      consider using '%zi' in the format string
+  
   ConsoleApplication1.vcxproj -> C:\Users\TheSimilier\Code\advent-of-code-2024-solutions\Day_8\x64\Debug\ConsoleApplication1.exe

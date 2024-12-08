@@ -2,9 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <tuple>
 #include <unordered_map>
-#include <deque>
+#include <unordered_set>
 
 struct Point {
     uint16_t x;
@@ -15,26 +14,9 @@ struct Point {
     }
 };
 
-struct Direction {
-    int16_t x;
-    int16_t y;
-
-    bool operator==(Direction d) const {
-        return (d.x == x && d.y == y);
-    }
-};
-
 template <>
 struct std::hash<Point> {
     std::size_t operator()(Point const& s) const {
-        return ((std::hash<uint16_t>()(s.x)
-            ^ (std::hash<uint16_t>()(s.y) << 1)) >> 1);
-    }
-};
-
-template<>
-struct std::hash<Direction> {
-    std::size_t operator()(Direction const& s) const {
         return ((std::hash<uint16_t>()(s.x)
             ^ (std::hash<uint16_t>()(s.y) << 1)) >> 1);
     }
@@ -74,8 +56,7 @@ int main()
     height = lineIndex-1;
     fileIn.close();
     
-    uint16_t sumAntiNodes = 0;
-    std::vector<Point> locationNodesFreq;
+    std::unordered_set<Point> locationNodesFreq;
 
     for (auto currPair : frequencyLocations) {
         const auto& locations = currPair.second;
@@ -84,20 +65,15 @@ int main()
         for (auto i = 0; i <= locations.size() - 2; i++) {
             const auto& p1 = locations[i];
 
-            if (std::find(locationNodesFreq.begin(), locationNodesFreq.end(), p1) == locationNodesFreq.end()) {
-                locationNodesFreq.push_back(p1);
-                ++sumAntiNodes;
-            }
+            locationNodesFreq.emplace(p1);
 
             for (auto j = i + 1; j <= locations.size() - 1; j++) {
                 const auto& p2 = locations[j];
                 const auto deltaX = p1.x - p2.x;
                 const auto deltaY = p1.y - p2.y;
 
-                if (std::find(locationNodesFreq.begin(), locationNodesFreq.end(), p2) == locationNodesFreq.end()) {
-                    locationNodesFreq.push_back(p2);
-                    ++sumAntiNodes;
-                }
+                locationNodesFreq.emplace(p2);
+
                 auto runningDeltaX = deltaX;
                 auto runningDeltaY = deltaY;
                 while (std::abs(runningDeltaX) <= width && std::abs(runningDeltaY) <= height) {
@@ -110,13 +86,11 @@ int main()
 						.y = static_cast<uint16_t>(p2.y - runningDeltaY),
 					};
 
-					if (p3.x <= width && p3.x > 0 && p3.y <= height && p3.y > 0 && std::find(locationNodesFreq.begin(), locationNodesFreq.end(), p3) == locationNodesFreq.end()) {
-						locationNodesFreq.push_back(p3);
-						++sumAntiNodes;
+					if (p3.x <= width && p3.x > 0 && p3.y <= height && p3.y > 0) {
+						locationNodesFreq.emplace(p3);
 					}
-					if (p4.x <= width && p4.x > 0 && p4.y <= height && p4.y > 0 && std::find(locationNodesFreq.begin(), locationNodesFreq.end(), p4) == locationNodesFreq.end()) {
-						locationNodesFreq.push_back(p4);
-						++sumAntiNodes;
+					if (p4.x <= width && p4.x > 0 && p4.y <= height && p4.y > 0) {
+						locationNodesFreq.emplace(p4);
 					}
 
                     runningDeltaX += deltaX;
@@ -126,6 +100,6 @@ int main()
         }
     }
 
-    std::printf("antinode count: %i\n", sumAntiNodes);
+    std::printf("antinode count: %i\n", locationNodesFreq.size());
 }
 
